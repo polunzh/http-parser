@@ -50,6 +50,7 @@ class HttpParser(object):
         # protected variables
         self._buf = []
         self._version = None
+        self._protocol = None
         self._method = None
         self._status_code = None
         self._status = None
@@ -78,6 +79,9 @@ class HttpParser(object):
 
     def get_version(self):
         return self._version
+    
+    def get_protocol(self):
+        return self._protocol
 
     def get_method(self):
         return self._method
@@ -279,6 +283,7 @@ class HttpParser(object):
         if matchv is None:
             raise InvalidRequestLine("Invalid HTTP version: %s" % bits[0])
         self._version = (int(matchv.group(2)), int(matchv.group(3)))
+        self._protocol = matchv.group(1)
 
         # status
         matchs = STATUS_RE.match(bits[1])
